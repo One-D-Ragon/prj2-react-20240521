@@ -43,7 +43,29 @@ export function BoardView() {
   }, []);
 
   function handleClickRemove() {
-    axios.delete(`/api/board/${id}`);
+    axios
+      .delete(`/api/board/${id}`)
+      .then(() => {
+        /* 삭제가 성공하면 알림창을 띄움 */
+        toast({
+          status: "success",
+          description: `${id}번 게시물이 삭제되었습니다.`,
+          position: "top",
+        });
+        /* 삭제가 성공하면 이동시킴 */
+        navigate("/");
+      })
+      .catch(() => {
+        /* 삭제가 실패하면 알림창을 띄움 */
+        toast({
+          status: "error",
+          description: `${id}번 게시물 삭제 중 오류가 발생하였습니다.`,
+          position: "top",
+        });
+      })
+      .finally(() => {
+        onClose();
+      });
   }
 
   if (board === null) {
