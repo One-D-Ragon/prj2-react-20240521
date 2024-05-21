@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
+  const navigate = useNavigate();
 
   // 컴포넌트가 마운트될 때
   useEffect(() => {
@@ -31,7 +33,14 @@ export function BoardList() {
           </Thead>
           <Tbody>
             {boardList.map((board) => (
-              <Tr key={board.id}>
+              <Tr
+                _hover={{
+                  bgColor: "gray.200",
+                }}
+                cursor={"pointer"}
+                onClick={() => navigate(`/board/${board.id}`)}
+                key={board.id}
+              >
                 <Td>{board.id}</Td>
                 <Td>{board.title}</Td>
                 <Td>{board.writer}</Td>
