@@ -15,10 +15,13 @@ export function BoardWrite() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
 
   function handleSaveClick() {
+    // 저장이 눌리면 버튼이 로딩이 됨
+    setLoading(true);
     axios
       .post("/api/board/add", {
         /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
@@ -48,7 +51,8 @@ export function BoardWrite() {
           });
         }
       })
-      .finally();
+      /* 응답이 잘됐든 못됐든 저장이 끝나면 로딩이 풀리게 함 */
+      .finally(() => setLoading(false));
   }
 
   /* 리렌더링될 때마다 제목, 본문, 작성자가 비어있으면 저장 버튼이 비활성화됨*/
@@ -87,6 +91,7 @@ export function BoardWrite() {
         </Box>
         <Box>
           <Button
+            isLoading={loading}
             isDisabled={disableSaveButton}
             colorScheme={"blue"}
             onClick={handleSaveClick}
