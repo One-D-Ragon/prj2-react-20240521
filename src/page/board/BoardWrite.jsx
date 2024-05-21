@@ -21,7 +21,7 @@ export function BoardWrite() {
   function handleSaveClick() {
     axios
       .post("/api/board/add", {
-        /* 이름이 같으면 생략 가능 */
+        /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
         title,
         content,
         writer,
@@ -36,8 +36,31 @@ export function BoardWrite() {
         /* 새 글을 등록하면 홈으로 이동시킴 */
         navigate("/");
       })
-      .catch()
+      .catch((e) => {
+        const code = e.response.status;
+
+        /* 새 글을 등록 실패시 코드가 400번일때 알림창 */
+        if (code === 400) {
+          toast({
+            status: "error",
+            description: "등록되지 않았습니다. 입력한 내용을 확인하세요.",
+            position: "top",
+          });
+        }
+      })
       .finally();
+  }
+
+  /* 리렌더링될 때마다 제목, 본문, 작성자가 비어있으면 저장 버튼이 비활성화됨*/
+  let disableSaveButton = false;
+  if (title.trim().length === 0) {
+    disableSaveButton = true;
+  }
+  if (content.trim().length === 0) {
+    disableSaveButton = true;
+  }
+  if (writer.trim().length === 0) {
+    disableSaveButton = true;
   }
 
   return (
@@ -63,7 +86,11 @@ export function BoardWrite() {
           </FormControl>
         </Box>
         <Box>
-          <Button colorScheme={"blue"} onClick={handleSaveClick}>
+          <Button
+            isDisabled={disableSaveButton}
+            colorScheme={"blue"}
+            onClick={handleSaveClick}
+          >
             저장
           </Button>
         </Box>
