@@ -21,6 +21,7 @@ export function MemberSignup() {
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckedEmail, setIsCheckedEmail] = useState(false);
   const [isCheckedNickName, setIsCheckedNickName] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
 
   const toast = useToast();
   const navigate = useNavigate();
@@ -134,6 +135,11 @@ export function MemberSignup() {
     isDisabled = true;
   }
 
+  // 유효한 이메일을 입력했을 때만 가입버튼 활성화
+  if (!isValidEmail) {
+    isDisabled = true;
+  }
+
   return (
     <Box>
       <Box>회원 가입</Box>
@@ -143,13 +149,21 @@ export function MemberSignup() {
             <FormLabel>이메일</FormLabel>
             <InputGroup>
               <Input
+                type={"email"}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  setIsCheckedemail(false);
+                  setIsCheckedEmail(false);
+                  setIsValidEmail(!e.target.validity.typeMismatch);
+                  console.log(e.target.validity.typeMismatch);
                 }}
               />
               <InputRightElement w={"75px"} mr={1}>
-                <Button onClick={handleCheckEmail} size={"sm"}>
+                {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
+                <Button
+                  isDisabled={!isValidEmail || email.trim().length == 0}
+                  onClick={handleCheckEmail}
+                  size={"sm"}
+                >
                   중복확인
                 </Button>
               </InputRightElement>
@@ -157,6 +171,12 @@ export function MemberSignup() {
             {/* 이메일 중복확인 안되면 안내 메세지 출력 */}
             {isCheckedEmail || (
               <FormHelperText>이메일 중복확인을 해주세요.</FormHelperText>
+            )}
+            {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
+            {isValidEmail || (
+              <FormHelperText>
+                올바른 이메일 형식으로 작성해 주세요.
+              </FormHelperText>
             )}
           </FormControl>
         </Box>
@@ -187,7 +207,12 @@ export function MemberSignup() {
                 }}
               />
               <InputRightElement w={"75px"} mr={1}>
-                <Button onClick={handleCheckNickName} size={"sm"}>
+                {/* 입력한 별명의 길이가 0이면 중복확인 버튼 비활성화 */}
+                <Button
+                  isDisabled={nickName.trim().length == 0}
+                  onClick={handleCheckNickName}
+                  size={"sm"}
+                >
                   중복확인
                 </Button>
               </InputRightElement>
