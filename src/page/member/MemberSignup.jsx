@@ -200,9 +200,11 @@ export function MemberSignup() {
           <FormControl>
             <FormLabel>별명</FormLabel>
             <InputGroup>
+              {/* value에 nickName을 주고 setNickName에 trim()을 줘서 앞뒤에 공백 불가능 */}
               <Input
+                value={nickName}
                 onChange={(e) => {
-                  setNickName(e.target.value);
+                  setNickName(e.target.value.trim());
                   setIsCheckedNickName(false);
                 }}
               />
