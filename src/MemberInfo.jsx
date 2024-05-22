@@ -21,6 +21,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export function MemberInfo() {
   const [member, setMember] = useState(null); // null 말고 {}도 된다
   const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState("");
   const { id } = useParams();
 
   const toast = useToast();
@@ -48,7 +49,7 @@ export function MemberInfo() {
     setIsLoading(true);
 
     axios
-      .delete(`/api/member/${id}`)
+      .delete(`/api/member/${id}`, { data: { id, password } })
       .then(() => {
         toast({
           status: "success",
@@ -67,6 +68,9 @@ export function MemberInfo() {
       .finally(() => {
         /* 탈퇴 버튼을 연속적으로 누르지 못하게 */
         setIsLoading(false);
+        /* 탈퇴시 모달에서 입력한 패스워드를 초기화 */
+        setPassword("");
+        onClose();
       });
   }
 
@@ -107,8 +111,16 @@ export function MemberInfo() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader></ModalHeader>
-          <ModalBody>탈퇴하시겠습니까?</ModalBody>
+          <ModalHeader>탈퇴 확인</ModalHeader>
+          <ModalBody>
+            <FormControl>
+              <FormLabel>암호</FormLabel>
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
           <ModalFooter>
             <Button>취소</Button>
             <Button
