@@ -76,6 +76,29 @@ export function MemberSignup() {
       .finally();
   }
 
+  function handleCheckNickName() {
+    axios
+      .get(`/api/member/check?nickName=${nickName}`)
+      .then((res) => {
+        toast({
+          status: "warning",
+          description: "사용할 수 없는 닉네임입니다.",
+          position: "top",
+        });
+      }) // 이미 있는 이메일
+      .catch((err) => {
+        if (err.response.status === 404) {
+          // 사용할 수 있는 닉네임
+          toast({
+            status: "info",
+            description: "사용할 수 있는 닉네임입니다.",
+            position: "top",
+          });
+        }
+      })
+      .finally();
+  }
+
   return (
     <Box>
       <Box>회원 가입</Box>
@@ -102,7 +125,14 @@ export function MemberSignup() {
         <Box>
           <FormControl>
             <FormLabel>별명</FormLabel>
-            <Input onChange={(e) => setNickName(e.target.value)} />
+            <InputGroup>
+              <Input onChange={(e) => setNickName(e.target.value)} />
+              <InputRightElement w={"75px"} mr={1}>
+                <Button onClick={handleCheckNickName} size={"sm"}>
+                  중복확인
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
         </Box>
         <Box>
