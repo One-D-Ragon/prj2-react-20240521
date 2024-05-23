@@ -81,6 +81,15 @@ export function MemberEdit() {
     isDisableSaveButton = true;
   }
 
+  /* 중복 확인이 안됐으면 저장버튼 비활성화 */
+  if (!isCheckedNickName) {
+    isDisableSaveButton = true;
+  }
+  /* 중복확인이 끝났으면 중복확인 버튼 비활성화 */
+  if (isCheckedNickName) {
+    isDisableNickNameCheckButton = true;
+  }
+
   function handleCheckNickName() {
     axios
       .get(`/api/member/check?nickName=${member.nickName}`)
@@ -143,9 +152,11 @@ export function MemberEdit() {
           <FormControl>별명</FormControl>
           <InputGroup>
             <Input
-              onChange={(e) =>
-                setMember({ ...member, nickName: e.target.value.trim() })
-              }
+              onChange={(e) => {
+                const newNickName = e.target.value.trim();
+                setMember({ ...member, nickName: newNickName });
+                setIsCheckedNickName(newNickName === oldNickName);
+              }}
               value={member.nickName}
             />
             <InputRightElement w={"75px"} mr={1}>
