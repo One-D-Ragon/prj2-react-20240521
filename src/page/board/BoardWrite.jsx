@@ -24,11 +24,19 @@ export function BoardWrite() {
     // 저장이 눌리면 버튼이 로딩이 됨
     setLoading(true);
     axios
-      .post("/api/board/add", {
-        /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
-        title,
-        content,
-      })
+      .post(
+        "/api/board/add",
+        {
+          /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
+          title,
+          content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      )
       .then(() => {
         /* 새 글을 등록 성공시 알림창 */
         toast({
