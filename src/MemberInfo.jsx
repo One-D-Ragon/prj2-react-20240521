@@ -68,7 +68,7 @@ export function MemberInfo() {
       .finally(() => {
         /* 탈퇴 버튼을 연속적으로 누르지 못하게 */
         setIsLoading(false);
-        /* 탈퇴시 모달에서 입력한 패스워드를 초기화 */
+        /* 탈퇴 실패시 모달에서 입력한 패스워드를 초기화 */
         setPassword("");
         onClose();
       });
