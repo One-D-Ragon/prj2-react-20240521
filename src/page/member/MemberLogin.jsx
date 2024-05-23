@@ -6,21 +6,24 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../component/LoginProvider.jsx";
 
 export function MemberLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
+  const account = useContext(LoginContext);
+  // const {login, logout} = useContext(LoginContext); // 분해할당해서 쓸 수 있지만 account 전부 씀
 
   function handleLogin() {
     axios
       .post("/api/member/token", { email, password })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
+        account.login(res.data.token);
         toast({
           status: "success",
           description: "로그인 되었습니다.",
@@ -30,7 +33,7 @@ export function MemberLogin() {
       })
       .catch(() => {
         /* 로그인 실패하면 토큰을 지움 */
-        localStorage.removeItem("token");
+        account.logout();
         toast({
           status: "warning",
           description: "이메일과 패스워드를 확인해주세요.",
