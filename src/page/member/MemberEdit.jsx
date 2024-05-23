@@ -5,6 +5,8 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalContent,
@@ -23,6 +25,8 @@ export function MemberEdit() {
   const [member, setMember] = useState(null);
   const [oldPassword, setOldPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [isCheckedNickName, setIsCheckedNickName] = useState(true);
+  const [oldNickName, setOldNickName] = useState("");
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
@@ -34,6 +38,7 @@ export function MemberEdit() {
       .then((res) => {
         const member1 = res.data;
         setMember({ ...member1, password: "" });
+        setOldNickName(member1.nickName);
       })
       .catch(() => {
         toast({
@@ -57,6 +62,16 @@ export function MemberEdit() {
     return <Spinner />;
   }
 
+  let isDisableNickNameCheckButton = false;
+  // 기존 별명과 같으면 중복확인 버튼 비활성화
+  if (member.nickName === oldNickName) {
+    isDisableNickNameCheckButton = true;
+  }
+  // 별명이 없으면 중복확인 버튼 비활성화
+  if (member.nickName.length == 0) {
+    isDisableNickNameCheckButton = true;
+  }
+
   let isDisableSaveButton = false;
   /* 암호와 암호확인이 일치하지 않으면 저장 버튼이 비활성화 */
   if (member.password !== passwordCheck) {
@@ -64,6 +79,31 @@ export function MemberEdit() {
   }
   if (member.nickName.trim().length === 0) {
     isDisableSaveButton = true;
+  }
+
+  function handleCheckNickName() {
+    axios
+      .get(`/api/member/check?nickName=${member.nickName}`)
+      .then((res) => {
+        toast({
+          status: "warning",
+          description: "사용할 수 없는 닉네임입니다.",
+          position: "top",
+        });
+      }) // 이미 있는 이메일
+      .catch((err) => {
+        if (err.response.status === 404) {
+          // 사용할 수 있는 닉네임
+          toast({
+            status: "info",
+            description: "사용할 수 있는 닉네임입니다.",
+            position: "top",
+          });
+          /* 별명 중복확인 되어야 가입버튼 활성화 */
+          setIsCheckedNickName(true);
+        }
+      })
+      .finally();
   }
 
   return (
@@ -100,15 +140,24 @@ export function MemberEdit() {
           </FormControl>
         </Box>
         <Box>
-          <FormControl>
-            <FormLabel>별명</FormLabel>
+          <FormControl>별명</FormControl>
+          <InputGroup>
             <Input
               onChange={(e) =>
                 setMember({ ...member, nickName: e.target.value.trim() })
               }
               value={member.nickName}
             />
-          </FormControl>
+            <InputRightElement w={"75px"} mr={1}>
+              <Button
+                isDisabled={isDisableNickNameCheckButton}
+                size={"sm"}
+                onClick={handleCheckNickName}
+              >
+                중복확인
+              </Button>
+            </InputRightElement>
+          </InputGroup>
         </Box>
         <Box>
           <Button
