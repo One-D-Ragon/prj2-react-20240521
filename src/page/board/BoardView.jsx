@@ -44,7 +44,11 @@ export function BoardView() {
 
   function handleClickRemove() {
     axios
-      .delete(`/api/board/${id}`)
+      .delete(`/api/board/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then(() => {
         /* 삭제가 성공하면 알림창을 띄움 */
         toast({
