@@ -45,7 +45,15 @@ export function MemberInfo() {
             description: "존재하지 않는 회원입니다.",
             position: "top",
           });
-          navigate("/member/list");
+          navigate("/");
+        } else if (err.response.status === 403) {
+          toast({
+            status: "error",
+            description: "권한이 없습니다.",
+            position: "top",
+          });
+          /* 이전 페이지로 이동 */
+          navigate(-1);
         }
       })
       .finally();
