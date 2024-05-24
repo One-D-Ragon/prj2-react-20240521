@@ -10,6 +10,7 @@ export function LoginProvider({ children }) {
   const [id, setId] = useState("");
   const [nickName, setNickName] = useState("");
   const [expired, setExpired] = useState(0);
+  const [authority, setAuthority] = useState([]);
 
   // 새로고침 후에 로그인 상태 유지
   useEffect(() => {
@@ -29,6 +30,10 @@ export function LoginProvider({ children }) {
     return id == param;
   }
 
+  function isAdmin() {
+    return authority.includes("admin");
+  }
+
   // login
   function login(token) {
     localStorage.setItem("token", token);
@@ -36,6 +41,7 @@ export function LoginProvider({ children }) {
     setExpired(payload.exp);
     setId(payload.sub);
     setNickName(payload.nickName);
+    setAuthority(payload.scope.split(" ")); // "admin manager user"
   }
 
   // logout
@@ -44,6 +50,7 @@ export function LoginProvider({ children }) {
     setExpired(0);
     setId("");
     setNickName("");
+    setAuthority([]);
   }
 
   return (
@@ -55,6 +62,7 @@ export function LoginProvider({ children }) {
         logout: logout,
         isLoggedIn: isLoggedIn,
         hasAccess: hasAccess,
+        isAdmin: isAdmin,
       }}
     >
       {children}

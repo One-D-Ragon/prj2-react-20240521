@@ -14,7 +14,7 @@ import { MemberLogin } from "./page/member/MemberLogin.jsx";
 import { LoginProvider } from "./component/LoginProvider.jsx";
 import axios from "axios";
 
-// axios inteceptor 설정
+// axios interceptor 설정
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
