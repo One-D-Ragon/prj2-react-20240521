@@ -1,4 +1,14 @@
-import { Box, Button, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
   faAngleLeft,
@@ -70,7 +80,7 @@ export function BoardList() {
           </Tbody>
         </Table>
       </Box>
-      <Box>
+      <Center>
         {pageInfo.prevPageNumber && (
           <>
             <Button onClick={() => navigate(`/?page=1`)}>
@@ -108,7 +118,7 @@ export function BoardList() {
             </Button>
           </>
         )}
-      </Box>
+      </Center>
     </Box>
   );
 }
