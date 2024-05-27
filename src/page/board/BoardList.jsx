@@ -40,6 +40,9 @@ export function BoardList() {
       setBoardList(res.data.boardList);
       setPageInfo(res.data.pageInfo);
     });
+    // home을 눌렀을 때 input 초기화
+    setSearchType("all");
+    setSearchKeyword("");
 
     const typeParam = searchParams.get("type");
     const keywordParam = searchParams.get("keyword");
