@@ -3,19 +3,26 @@ import React, { useEffect, useState } from "react";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const navigate = useNavigate();
+  // 페이징
+  const [searchParams] = useSearchParams();
 
   // 컴포넌트가 마운트될 때
   useEffect(() => {
-    axios.get("/api/board/list").then((res) => setBoardList(res.data));
+    axios
+      .get(`/api/board/list?${searchParams}`)
+      .then((res) => setBoardList(res.data));
   }, []);
   // [{id:5, title: "제목1", writer: "누구1"},
   // {id:5, title: "제목1", writer: "누구1"},
   // {id:5, title: "제목1", writer: "누구1"}]
+
+  // console.log("page", searchParams.get("page"));
+  // [URLSearchParams, f] urlsearchparams는 자바스크립트 객체, key&value 쌍을 가지고 있다, 함수는 searchparams를 업데이트하는 함수
 
   return (
     <Box>
