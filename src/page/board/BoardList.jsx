@@ -1,4 +1,4 @@
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,22 +7,30 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
   const navigate = useNavigate();
   // 페이징
   const [searchParams] = useSearchParams();
 
   // 컴포넌트가 마운트될 때
   useEffect(() => {
-    axios
-      .get(`/api/board/list?${searchParams}`)
-      .then((res) => setBoardList(res.data));
-  }, []);
+    axios.get(`/api/board/list?${searchParams}`).then((res) => {
+      setBoardList(res.data.boardList);
+      setPageInfo(res.data.pageInfo);
+    });
+  }, [searchParams]);
   // [{id:5, title: "제목1", writer: "누구1"},
   // {id:5, title: "제목1", writer: "누구1"},
   // {id:5, title: "제목1", writer: "누구1"}]
+  // dependencies가 있으면 searchParams가 변경되면 useEffect 함수를 트리거 한다
 
   // console.log("page", searchParams.get("page"));
   // [URLSearchParams, f] urlsearchparams는 자바스크립트 객체, key&value 쌍을 가지고 있다, 함수는 searchparams를 업데이트하는 함수
+
+  const pageNumbers = [];
+  for (let i = 1; i <= pageInfo.lastPageNumber; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <Box>
@@ -55,6 +63,16 @@ export function BoardList() {
             ))}
           </Tbody>
         </Table>
+      </Box>
+      <Box>
+        {pageNumbers.map((pageNumber) => (
+          <Button
+            onClick={() => navigate(`/?page=${pageNumber}`)}
+            key={pageNumber}
+          >
+            {pageNumber}
+          </Button>
+        ))}
       </Box>
     </Box>
   );
