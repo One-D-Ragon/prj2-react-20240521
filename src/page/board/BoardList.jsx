@@ -28,7 +28,7 @@ export function BoardList() {
   // [URLSearchParams, f] urlsearchparams는 자바스크립트 객체, key&value 쌍을 가지고 있다, 함수는 searchparams를 업데이트하는 함수
 
   const pageNumbers = [];
-  for (let i = 1; i <= pageInfo.lastPageNumber; i++) {
+  for (let i = pageInfo.leftPageNumber; i <= pageInfo.rightPageNumber; i++) {
     pageNumbers.push(i);
   }
 
