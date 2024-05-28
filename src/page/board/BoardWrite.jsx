@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Textarea,
@@ -101,6 +102,9 @@ export function BoardWrite() {
                 setFiles(e.target.files);
               }}
             />
+            <FormHelperText>
+              총 용량은 10MB, 한 파일은 1MB를 초과할 수 없습니다.
+            </FormHelperText>
           </FormControl>
         </Box>
         <Box>
