@@ -61,7 +61,7 @@ export function MemberEdit() {
           description: "회원 정보가 수정되었습니다.",
           position: "top",
         });
-        account.login(res.date.token);
+        account.login(res.data.token);
         navigate(`/member/${id}`);
       })
       .catch(() => {
