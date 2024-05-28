@@ -25,19 +25,13 @@ export function BoardWrite() {
     // 저장이 눌리면 버튼이 로딩이 됨
     setLoading(true);
     axios
-      .post(
-        "/api/board/add",
-        {
-          /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
-          title,
-          content,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      )
+      .postForm("/api/board/add", {
+        /* 프로퍼티 명과 변수 이름이 같으면 변수명 생략 가능 */
+        /* JSON 형식, JSON 형식은 file 타입을 보낼 수 없다 -> postForm 사용, multipart/form형식(request header에서 content-type) */
+        title,
+        content,
+        files,
+      })
       .then(() => {
         /* 새 글을 등록 성공시 알림창 */
         toast({
