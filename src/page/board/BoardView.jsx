@@ -90,16 +90,22 @@ export function BoardView() {
     return <Spinner />;
   }
 
+  function handleClickLike() {
+    axios
+      .put(`/api/board/like`, { boardId: board.id })
+      .then((res) => {
+        setLike(res.data);
+      })
+      .catch(() => {})
+      .finally(() => {});
+  }
+
   return (
     <Box>
       <Flex>
         <Heading>{board.id}번 게시물</Heading>
         <Spacer />
-        <Box
-          onClick={() => setLike({ ...like, like: !like.like })}
-          cursor="pointer"
-          fontSize="3xl"
-        >
+        <Box onClick={handleClickLike} cursor="pointer" fontSize="3xl">
           {like.like && <FontAwesomeIcon icon={fullHeart} />}
           {like.like || <FontAwesomeIcon icon={emptyHeart} />}
         </Box>
