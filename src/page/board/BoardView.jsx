@@ -132,7 +132,7 @@ export function BoardView() {
           </Flex>
         )}
         {isLikeProcessing && (
-          <Box>
+          <Box pr={3}>
             <Spinner />
           </Box>
         )}
