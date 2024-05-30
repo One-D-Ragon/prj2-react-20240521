@@ -27,6 +27,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { faComments } from "@fortawesome/free-regular-svg-icons";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -114,6 +115,12 @@ export function BoardList() {
                       <Badge>
                         <FontAwesomeIcon icon={faImage} />
                         {board.numberOfImages}
+                      </Badge>
+                    )}
+                    {board.numberOfComments > 0 && (
+                      <Badge>
+                        <FontAwesomeIcon icon={faComments} />
+                        {board.numberOfComments}
                       </Badge>
                     )}
                   </Td>
