@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { Box, Center, Flex, Hide, Show, Spacer } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { LoginContext } from "./LoginProvider.jsx";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
   faPencil,
   faRightFromBracket,
   faRightToBracket,
-  faUser,
   faUserPlus,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
