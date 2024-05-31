@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -36,8 +38,7 @@ export function MemberSignup() {
           description: "회원 가입이 완료되었습니다.",
           position: "top",
         });
-        // todo : 로그인 화면으로 이동
-        navigate("/");
+        navigate("/login");
       })
       .catch((err) => {
         if (err.response.status === 400) {
@@ -141,101 +142,105 @@ export function MemberSignup() {
   }
 
   return (
-    <Box>
-      <Box>회원 가입</Box>
-      <Box>
-        <Box>
-          <FormControl>
-            <FormLabel>이메일</FormLabel>
-            <InputGroup>
-              <Input
-                type={"email"}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setIsCheckedEmail(false);
-                  setIsValidEmail(!e.target.validity.typeMismatch);
-                  console.log(e.target.validity.typeMismatch);
-                }}
-              />
-              <InputRightElement w={"75px"} mr={1}>
-                {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
-                <Button
-                  isDisabled={!isValidEmail || email.trim().length == 0}
-                  onClick={handleCheckEmail}
-                  size={"sm"}
-                >
-                  중복확인
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {/* 이메일 중복확인 안되면 안내 메세지 출력 */}
-            {isCheckedEmail || (
-              <FormHelperText>이메일 중복확인을 해주세요.</FormHelperText>
-            )}
-            {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
-            {isValidEmail || (
-              <FormHelperText>
-                올바른 이메일 형식으로 작성해 주세요.
-              </FormHelperText>
-            )}
-          </FormControl>
+    <Center>
+      <Box w={500}>
+        <Box mb={10}>
+          <Heading>회원 가입</Heading>
         </Box>
         <Box>
-          <FormControl>
-            <FormLabel>암호</FormLabel>
-            <Input onChange={(e) => setPassword(e.target.value)} />
-          </FormControl>
-        </Box>
-        <Box>
-          <FormControl>
-            <FormLabel>암호확인</FormLabel>
-            <Input onChange={(e) => setPasswordCheck(e.target.value)} />
-            {/* 암호 확인 인풋 추가 */}
-            {isCheckedPassword || (
-              <FormHelperText>암호가 일치하지 않습니다.</FormHelperText>
-            )}
-          </FormControl>
-        </Box>
-        <Box>
-          <FormControl>
-            <FormLabel>별명</FormLabel>
-            <InputGroup>
-              {/* value에 nickName을 주고 setNickName에 trim()을 줘서 앞뒤에 공백 불가능 */}
-              <Input
-                value={nickName}
-                onChange={(e) => {
-                  setNickName(e.target.value.trim());
-                  setIsCheckedNickName(false);
-                }}
-              />
-              <InputRightElement w={"75px"} mr={1}>
-                {/* 입력한 별명의 길이가 0이면 중복확인 버튼 비활성화 */}
-                <Button
-                  isDisabled={nickName.trim().length == 0}
-                  onClick={handleCheckNickName}
-                  size={"sm"}
-                >
-                  중복확인
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {/* 별명 중복확인 안되면 안내 메세지 출력 */}
-            {isCheckedNickName || (
-              <FormHelperText>별명 중복확인을 해주세요.</FormHelperText>
-            )}
-          </FormControl>
-        </Box>
-        <Box>
-          <Button
-            isLoading={isLoading}
-            colorScheme={"blue"}
-            onClick={handleClick}
-            isDisabled={isDisabled}
-          >
-            가입
-          </Button>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>이메일</FormLabel>
+              <InputGroup>
+                <Input
+                  type={"email"}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setIsCheckedEmail(false);
+                    setIsValidEmail(!e.target.validity.typeMismatch);
+                    console.log(e.target.validity.typeMismatch);
+                  }}
+                />
+                <InputRightElement w={"75px"} mr={1}>
+                  {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
+                  <Button
+                    isDisabled={!isValidEmail || email.trim().length == 0}
+                    onClick={handleCheckEmail}
+                    size={"sm"}
+                  >
+                    중복확인
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              {/* 이메일 중복확인 안되면 안내 메세지 출력 */}
+              {isCheckedEmail || (
+                <FormHelperText>이메일 중복확인을 해주세요.</FormHelperText>
+              )}
+              {/* 올바른 이메일 형식을 작성했을 때만 중복확인 버튼 활성화 */}
+              {isValidEmail || (
+                <FormHelperText>
+                  올바른 이메일 형식으로 작성해 주세요.
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>암호</FormLabel>
+              <Input onChange={(e) => setPassword(e.target.value)} />
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>암호확인</FormLabel>
+              <Input onChange={(e) => setPasswordCheck(e.target.value)} />
+              {/* 암호 확인 인풋 추가 */}
+              {isCheckedPassword || (
+                <FormHelperText>암호가 일치하지 않습니다.</FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <FormControl>
+              <FormLabel>별명</FormLabel>
+              <InputGroup>
+                {/* value에 nickName을 주고 setNickName에 trim()을 줘서 앞뒤에 공백 불가능 */}
+                <Input
+                  value={nickName}
+                  onChange={(e) => {
+                    setNickName(e.target.value.trim());
+                    setIsCheckedNickName(false);
+                  }}
+                />
+                <InputRightElement w={"75px"} mr={1}>
+                  {/* 입력한 별명의 길이가 0이면 중복확인 버튼 비활성화 */}
+                  <Button
+                    isDisabled={nickName.trim().length == 0}
+                    onClick={handleCheckNickName}
+                    size={"sm"}
+                  >
+                    중복확인
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              {/* 별명 중복확인 안되면 안내 메세지 출력 */}
+              {isCheckedNickName || (
+                <FormHelperText>별명 중복확인을 해주세요.</FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+          <Box mb={7}>
+            <Button
+              isLoading={isLoading}
+              colorScheme={"blue"}
+              onClick={handleClick}
+              isDisabled={isDisabled}
+            >
+              가입
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Center>
   );
 }
